@@ -175,7 +175,7 @@ drop policy if exists "public read published posts" on public.blog_posts;
 create policy "public read published posts"
 on public.blog_posts for select
 using (
-  (status = 'published' and published_at is not null and published_at <= now())
+  status = 'published'
   or public.is_owner()
 );
 
@@ -194,8 +194,6 @@ using (
     from public.blog_posts
     where blog_posts.id = post_tags.post_id
       and blog_posts.status = 'published'
-      and blog_posts.published_at is not null
-      and blog_posts.published_at <= now()
   )
   or public.is_owner()
 );

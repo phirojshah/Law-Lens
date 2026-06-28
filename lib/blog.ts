@@ -37,8 +37,8 @@ export async function getPublishedPosts() {
     .from("blog_posts")
     .select(postSelect)
     .eq("status", "published")
-    .not("published_at", "is", null)
-    .order("published_at", { ascending: false });
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("updated_at", { ascending: false });
 
   if (error) {
     console.error("Failed to fetch published posts", error.message);
@@ -57,8 +57,7 @@ export async function getPublishedPostSlugs() {
   const { data, error } = await supabase
     .from("blog_posts")
     .select("slug,updated_at")
-    .eq("status", "published")
-    .not("published_at", "is", null);
+    .eq("status", "published");
 
   if (error) {
     console.error("Failed to fetch post slugs", error.message);

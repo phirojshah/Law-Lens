@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { calculateReadingTime, slugify } from "@/lib/blog";
 import { requireOwner } from "@/lib/auth";
@@ -62,6 +63,7 @@ export async function createPostAction(formData: FormData) {
 
   await syncTags(post.id, parsed.tags);
   await logActivity("create", "blog_posts", post.id, { title: parsed.title });
+  revalidatePostPaths(parsed.slug);
   redirect(`/admin/posts/${post.id}/edit?saved=1`);
 }
 
@@ -70,9 +72,9 @@ export async function updatePostAction(id: string, formData: FormData) {
   const parsed = parsePostForm(formData, `/admin/posts/${id}/edit`);
   const { data: existing } = await supabase
     .from("blog_posts")
-    .select("id,published_at,featured_image_url,featured_image_path")
+    .select("id,slug,published_at,featured_image_url,featured_image_path")
     .eq("id", id)
-    .maybeSingle<Pick<BlogPost, "id" | "published_at" | "featured_image_url" | "featured_image_path">>();
+    .maybeSingle<Pick<BlogPost, "id" | "slug" | "published_at" | "featured_image_url" | "featured_image_path">>();
 
   if (!existing) {
     redirect("/admin/posts?error=Post not found.");
@@ -109,6 +111,7 @@ export async function updatePostAction(id: string, formData: FormData) {
 
   await syncTags(id, parsed.tags);
   await logActivity("update", "blog_posts", id, { title: parsed.title, status: parsed.status });
+  revalidatePostPaths(parsed.slug, existing.slug);
   redirect(`/admin/posts/${id}/edit?saved=1`);
 }
 
@@ -116,9 +119,9 @@ export async function deletePostAction(id: string) {
   const { supabase } = await requireOwner();
   const { data: post } = await supabase
     .from("blog_posts")
-    .select("featured_image_path")
+    .select("slug,featured_image_path")
     .eq("id", id)
-    .maybeSingle<Pick<BlogPost, "featured_image_path">>();
+    .maybeSingle<Pick<BlogPost, "slug" | "featured_image_path">>();
 
   if (post?.featured_image_path) {
     await supabase.storage.from("blog-media").remove([post.featured_image_path]);
@@ -132,6 +135,11 @@ export async function deletePostAction(id: string) {
     redirect(`/admin/posts?error=${encodeURIComponent(error.message)}`);
   }
 
+  if (post?.slug) {
+    revalidatePostPaths(post.slug);
+  } else {
+    revalidatePath("/blog");
+  }
   redirect("/admin/posts?deleted=1");
 }
 
@@ -289,4 +297,14 @@ async function logActivity(action: string, entityType: string, entityId: string 
     entity_id: entityId,
     metadata,
   });
+}
+
+function revalidatePostPaths(slug: string, previousSlug?: string) {
+  revalidatePath("/blog");
+  revalidatePath("/sitemap.xml");
+  revalidatePath(`/blog/${slug}`);
+
+  if (previousSlug && previousSlug !== slug) {
+    revalidatePath(`/blog/${previousSlug}`);
+  }
 }

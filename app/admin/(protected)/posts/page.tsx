@@ -38,11 +38,11 @@ export default async function AdminPostsPage({
               <div>
                 <strong>{post.title}</strong>
                 <span>
-                  /blog/{post.slug} · {post.status} · {post.reading_time} min read
+                  /blog/{post.slug} · {post.status} · {post.published_at ? "public" : "no publish date"} · {post.reading_time} min read
                 </span>
               </div>
               <div className="admin-row-actions">
-                <Link href={`/blog/${post.slug}`}>Preview</Link>
+                <Link href={`/admin/posts/${post.id}/preview`}>Preview</Link>
                 <Link href={`/admin/posts/${post.id}/edit`}>Edit</Link>
                 <form action={deletePostAction.bind(null, post.id)}>
                   <button type="submit">Delete</button>
