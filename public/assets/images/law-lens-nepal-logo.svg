@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title desc">
+  <title id="title">Law Lens Nepal logo</title>
+  <desc id="desc">A navy legal scale mark with a lens inspired center for Law Lens Nepal.</desc>
+  <rect width="240" height="240" rx="40" fill="#f8f4ea"/>
+  <circle cx="120" cy="112" r="70" fill="#ffffff" stroke="#092747" stroke-width="8"/>
+  <path d="M120 56v112" stroke="#092747" stroke-width="9" stroke-linecap="round"/>
+  <path d="M74 84h92" stroke="#092747" stroke-width="9" stroke-linecap="round"/>
+  <path d="M120 58c17 0 25 12 46 26M120 58c-17 0-25 12-46 26" fill="none" stroke="#092747" stroke-width="9" stroke-linecap="round"/>
+  <path d="M72 90l-25 58h50L72 90zM168 90l-25 58h50L168 90z" fill="none" stroke="#092747" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M44 148h56M140 148h56" stroke="#092747" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="120" cy="52" r="10" fill="#092747"/>
+  <circle cx="120" cy="100" r="25" fill="#f8f4ea" stroke="#092747" stroke-width="7"/>
+  <circle cx="120" cy="100" r="12" fill="#cba556"/>
+  <path d="M101 181h38M92 194h56" stroke="#092747" stroke-width="9" stroke-linecap="round"/>
+  <path d="M78 166l23-24 11 13 13-18 37 29H78z" fill="#cba556" opacity="0.9"/>
+</svg>

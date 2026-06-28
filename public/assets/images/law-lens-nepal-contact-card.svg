@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">Law Lens Nepal contact details</title>
+  <desc id="desc">Business card style contact details for Law Lens Nepal.</desc>
+  <rect width="960" height="600" fill="#ffffff"/>
+  <rect x="8" y="8" width="944" height="584" fill="#ffffff" stroke="#252525" stroke-width="3"/>
+  <text x="610" y="78" fill="#092747" font-family="Georgia, 'Times New Roman', serif" font-size="42" font-weight="700">Anil Kumar Sah</text>
+  <text x="680" y="118" fill="#334155" font-family="Georgia, 'Times New Roman', serif" font-size="34">Advocate</text>
+  <text x="620" y="160" fill="#0f172a" font-family="Arial, sans-serif" font-size="28" font-weight="700">☎ 9840349555, 9824210365</text>
+  <text x="650" y="195" fill="#0f172a" font-family="Arial, sans-serif" font-size="26" font-weight="700">anilsah341@gmail.com</text>
+  <g transform="translate(380 165) scale(0.92)">
+    <circle cx="120" cy="112" r="70" fill="#ffffff" stroke="#092747" stroke-width="8"/>
+    <path d="M120 56v112" stroke="#092747" stroke-width="9" stroke-linecap="round"/>
+    <path d="M74 84h92" stroke="#092747" stroke-width="9" stroke-linecap="round"/>
+    <path d="M120 58c17 0 25 12 46 26M120 58c-17 0-25 12-46 26" fill="none" stroke="#092747" stroke-width="9" stroke-linecap="round"/>
+    <path d="M72 90l-25 58h50L72 90zM168 90l-25 58h50L168 90z" fill="none" stroke="#092747" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M44 148h56M140 148h56" stroke="#092747" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="120" cy="52" r="10" fill="#092747"/>
+    <circle cx="120" cy="100" r="25" fill="#f8f4ea" stroke="#092747" stroke-width="7"/>
+    <circle cx="120" cy="100" r="12" fill="#cba556"/>
+    <path d="M101 181h38M92 194h56" stroke="#092747" stroke-width="9" stroke-linecap="round"/>
+    <path d="M78 166l23-24 11 13 13-18 37 29H78z" fill="#cba556" opacity="0.9"/>
+  </g>
+  <text x="220" y="395" fill="#092747" font-family="Georgia, 'Times New Roman', serif" font-size="68" font-weight="700" letter-spacing="2">LAW LENS NEPAL</text>
+  <text x="250" y="435" fill="#64748b" font-family="Arial, sans-serif" font-size="30">Legal Solutions | Advocacy &amp; Consultancy</text>
+  <text x="260" y="500" fill="#0f172a" font-family="Arial, sans-serif" font-size="34" font-weight="700">📍 Maitighar, Kathmandu, Nepal</text>
+  <rect x="8" y="518" width="944" height="74" fill="#083352"/>
+  <text x="288" y="566" fill="#ffffff" font-family="Arial, sans-serif" font-size="34" font-weight="700">✉ lawlensnepal@gmail.com</text>
+</svg>
