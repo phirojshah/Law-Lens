@@ -23,6 +23,7 @@ export default function PostForm({
 }) {
   const [title, setTitle] = useState(defaults.title ?? "");
   const [slug, setSlug] = useState(defaults.slug ?? "");
+  const [slugEdited, setSlugEdited] = useState(Boolean(defaults.slug));
   const [summary, setSummary] = useState(defaults.summary ?? "");
   const [content, setContent] = useState(defaults.content ?? "");
   const [preview, setPreview] = useState(false);
@@ -46,27 +47,52 @@ export default function PostForm({
 
         <label>
           Title
-          <input name="title" value={title} onChange={(event) => setTitle(event.target.value)} maxLength={160} required />
+          <input
+            name="title"
+            value={title}
+            onChange={(event) => {
+              const nextTitle = event.target.value;
+              setTitle(nextTitle);
+              if (!slugEdited) {
+                setSlug(toPostSlug(nextTitle));
+              }
+            }}
+            minLength={3}
+            maxLength={160}
+            required
+          />
         </label>
         <label>
           Slug
           <input
             name="slug"
             value={slug}
-            onChange={(event) => setSlug(event.target.value)}
+            onChange={(event) => {
+              const nextSlug = toPostSlug(event.target.value);
+              setSlug(nextSlug);
+              setSlugEdited(Boolean(nextSlug));
+            }}
             pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
             placeholder="property-law-in-nepal"
             maxLength={120}
+          />
+          <small>Use English letters, numbers, and hyphens only.</small>
+        </label>
+        <label>
+          Summary
+          <textarea
+            name="summary"
+            rows={3}
+            value={summary}
+            onChange={(event) => setSummary(event.target.value)}
+            minLength={20}
+            maxLength={300}
             required
           />
         </label>
         <label>
-          Summary
-          <textarea name="summary" rows={3} value={summary} onChange={(event) => setSummary(event.target.value)} maxLength={300} required />
-        </label>
-        <label>
           Content
-          <textarea name="content" rows={14} value={content} onChange={(event) => setContent(event.target.value)} required />
+          <textarea name="content" rows={14} value={content} onChange={(event) => setContent(event.target.value)} minLength={20} required />
         </label>
 
         <div className="form-row">
@@ -158,4 +184,14 @@ function toDateTimeLocal(value?: string | null) {
   }
 
   return date.toISOString().slice(0, 16);
+}
+
+function toPostSlug(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/['"]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 96);
 }

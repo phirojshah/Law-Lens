@@ -10,20 +10,20 @@ const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 const postSchema = z.object({
-  title: z.string().trim().min(3).max(160),
+  title: z.string().trim().min(3, "Title must be at least 3 characters.").max(160, "Title must be 160 characters or fewer."),
   slug: z
     .string()
     .trim()
-    .min(3)
-    .max(120)
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  summary: z.string().trim().min(20).max(300),
-  content: z.string().trim().min(20),
-  category: z.string().trim().max(80).optional(),
-  tags: z.string().trim().max(300).optional(),
-  seoTitle: z.string().trim().max(160).optional(),
-  seoDescription: z.string().trim().max(180).optional(),
-  authorName: z.string().trim().max(120).optional(),
+    .min(3, "Slug must be at least 3 characters.")
+    .max(120, "Slug must be 120 characters or fewer.")
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must use English letters, numbers, and hyphens only."),
+  summary: z.string().trim().min(20, "Summary must be at least 20 characters.").max(300, "Summary must be 300 characters or fewer."),
+  content: z.string().trim().min(20, "Content must be at least 20 characters."),
+  category: z.string().trim().max(80, "Category must be 80 characters or fewer.").optional(),
+  tags: z.string().trim().max(300, "Tags must be 300 characters or fewer.").optional(),
+  seoTitle: z.string().trim().max(160, "SEO title must be 160 characters or fewer.").optional(),
+  seoDescription: z.string().trim().max(180, "SEO description must be 180 characters or fewer.").optional(),
+  authorName: z.string().trim().max(120, "Author must be 120 characters or fewer.").optional(),
   status: z.enum(["draft", "published"]),
   publishedAt: z.string().optional(),
 });
@@ -136,9 +136,11 @@ export async function deletePostAction(id: string) {
 }
 
 function parsePostForm(formData: FormData, failurePath: string) {
+  const title = String(formData.get("title") || "");
+  const rawSlug = String(formData.get("slug") || "");
   const parsed = postSchema.safeParse({
-    title: formData.get("title"),
-    slug: slugify(String(formData.get("slug") || "")),
+    title,
+    slug: slugify(rawSlug || title),
     summary: formData.get("summary"),
     content: formData.get("content"),
     category: formData.get("category"),
@@ -151,10 +153,15 @@ function parsePostForm(formData: FormData, failurePath: string) {
   });
 
   if (!parsed.success) {
-    redirect(`${failurePath}?error=${encodeURIComponent("Please check all required fields and slug format.")}`);
+    redirect(`${failurePath}?error=${encodeURIComponent(getPostValidationMessage(parsed.error))}`);
   }
 
   return parsed.data;
+}
+
+function getPostValidationMessage(error: z.ZodError) {
+  const messages = Array.from(new Set(error.issues.map((issue) => issue.message)));
+  return messages.join(" ");
 }
 
 function getPublishedAt(status: "draft" | "published", input: string | undefined, existing: string | null) {
